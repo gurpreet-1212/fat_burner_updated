@@ -1,0 +1,49 @@
+name: fat_burner
+description: A health tracking app for fitness and wellness goals.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  go_router: ^14.6.0
+  
+
+  # Firebase (must run: dart run flutterfire_cli:flutterfire configure)
+  firebase_core: ^4.5.0
+  firebase_auth: ^6.2.0
+  cloud_firestore: ^6.1.3
+  firebase_messaging: ^16.1.2
+  cloud_functions: ^6.0.7
+  fl_chart: ^0.68.0
+
+  # Health data (HealthKit on iOS, Health Connect on Android)
+  health: ^13.3.1
+
+  # HTTP requests
+  dio: ^5.9.2
+
+  # State management
+  provider: ^6.1.5
+
+dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+
+  assets:
+    - images/
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "images/betteralt_logo.PNG"   
