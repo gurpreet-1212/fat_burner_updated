@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fat_burner/theme/app_colors.dart';
+import 'package:fat_burner/theme/app_typography.dart';
+
 import 'home_screen.dart';
 import 'steps_screen.dart';
 import 'calories_screen.dart';
@@ -22,40 +25,65 @@ class _MainScreenState extends State<MainScreen> {
   ];
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    setState(() => _selectedIndex = index);
   }
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      body: _screens[_selectedIndex],
-
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        selectedItemColor: Colors.green,
-        unselectedItemColor: Colors.grey,
-
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home",
+      backgroundColor: isDark ? AppColors.canvasDark : AppColors.canvasLight,
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        switchInCurve: Curves.easeOut,
+        switchOutCurve: Curves.easeIn,
+        child: _screens[_selectedIndex],
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: isDark ? AppColors.surfaceDark : AppColors.surfaceLight,
+          border: Border(top: BorderSide(color: isDark ? AppColors.borderDark : AppColors.borderLight, width: 0.5)),
+        ),
+        child: NavigationBarTheme(
+          data: NavigationBarThemeData(
+            elevation: 0,
+            indicatorColor: AppColors.accent.withValues(alpha: 0.2), // Light highlight pill
+            backgroundColor: Colors.transparent,
+            labelTextStyle: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.selected)) {
+                return AppTypography.caption(color: AppColors.accent).copyWith(fontWeight: FontWeight.w700);
+              }
+              return AppTypography.caption(color: isDark ? AppColors.textOnDarkMuted : AppColors.textTertiary);
+            }),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.directions_walk),
-            label: "Steps",
+          child: NavigationBar(
+            selectedIndex: _selectedIndex,
+            onDestinationSelected: _onItemTapped,
+            destinations: const [
+              NavigationDestination(
+                icon: Icon(Icons.dashboard_outlined),
+                selectedIcon: Icon(Icons.dashboard_rounded, color: AppColors.accent),
+                label: 'Home',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.directions_walk_outlined),
+                selectedIcon: Icon(Icons.directions_walk_rounded, color: AppColors.accent),
+                label: 'Steps',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.local_fire_department_outlined),
+                selectedIcon: Icon(Icons.local_fire_department_rounded, color: AppColors.accent),
+                label: 'Diet',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.person_outline_rounded),
+                selectedIcon: Icon(Icons.person_rounded, color: AppColors.accent),
+                label: 'Profile',
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.local_fire_department),
-            label: "Calories",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "Profile",
-          ),
-        ],
+        ),
       ),
     );
   }

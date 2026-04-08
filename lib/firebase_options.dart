@@ -26,10 +26,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -58,5 +55,14 @@ class DefaultFirebaseOptions {
     messagingSenderId: '231893834616',
     projectId: 'fatburner---app',
     storageBucket: 'fatburner---app.firebasestorage.app',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyAKWv8v2Hb5-Hl77tiXbHH_uAX8mwiwMVE',
+    appId: '1:231893834616:ios:e8e67e487c21caf4d2868d',
+    messagingSenderId: '231893834616',
+    projectId: 'fatburner---app',
+    storageBucket: 'fatburner---app.firebasestorage.app',
+    iosBundleId: 'com.fatburner.fatBurner',
   );
 }

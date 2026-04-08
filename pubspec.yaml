@@ -29,6 +29,15 @@ dependencies:
 
   # State management
   provider: ^6.1.5
+  google_fonts: ^6.1.0
+  flutter_svg: ^2.0.10
+  animate_do: ^3.3.4
+  percent_indicator: ^4.2.3
+  shimmer: ^3.0.0
+  intl: ^0.20.2
+
+dependency_overrides:
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1

@@ -129,7 +129,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         boxShadow: [
           BoxShadow(
             blurRadius: 12,
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             offset: const Offset(0, 4),
           )
         ],
@@ -177,7 +177,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           /// 🔘 Toggle (Better UX than checkbox)
           Switch(
             value: isTakenToday,
-            activeColor: Colors.green,
+            activeThumbColor: Colors.green,
             onChanged: (val) {
               setState(() {
                 isTakenToday = val;
@@ -204,7 +204,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         boxShadow: [
           BoxShadow(
             blurRadius: 10,
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
           )
         ],
       ),
@@ -212,7 +212,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         children: [
           CircleAvatar(
             radius: 22,
-            backgroundColor: color.withOpacity(0.1),
+            backgroundColor: color.withValues(alpha: 0.1),
             child: Icon(icon, color: color, size: 22),
           ),
           const SizedBox(height: 12),

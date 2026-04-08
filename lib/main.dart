@@ -11,6 +11,7 @@ import 'package:fat_burner/providers/providers.dart';
 // ✅ Import your screens
 import 'package:fat_burner/screens/login_screen.dart';
 import 'package:fat_burner/screens/main_screen.dart';
+import 'package:fat_burner/theme/app_theme.dart';
 
 import 'firebase_options.dart';
 
@@ -26,10 +27,14 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  /// 🔥 Initialize Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  /// 🔥 Initialize Firebase Safely (Bypasses white screen on missing config)
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    debugPrint("Firebase init missing: $e");
+  }
 
   /// 🔥 Register background handler
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
@@ -55,17 +60,17 @@ class FatBurnerApp extends StatelessWidget {
           value: PurchaseStatusProvider.instance,
         ),
       ],
-      child: MaterialApp(
+      child: MaterialApp.router(
         title: 'BetterAlt',
         debugShowCheckedModeBanner: false,
 
         /// 🎨 Theme
-        theme: AppTheme.light,
-        darkTheme: AppTheme.dark,
-        themeMode: ThemeMode.system,
+        theme: AppTheme.light(),
+        darkTheme: AppTheme.dark(),
+        themeMode: ThemeMode.dark, // Defaulting to dark as per plan
 
-        /// 🔐 Auth Gate
-        home: const AuthGate(),
+        /// 🔐 Auth Gate via GoRouter
+        routerConfig: AppRouter.router,
       ),
     );
   }
@@ -77,9 +82,10 @@ class AuthGate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
+    try {
+      return StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
         
         /// 🔄 Loading
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -96,6 +102,10 @@ class AuthGate extends StatelessWidget {
         /// ❌ Not logged in → go to login
         return const LoginScreen();
       },
-    );
+      );
+    } catch (e) {
+      // Fallback if Firebase is completely unconfigured
+      return const LoginScreen();
+    }
   }
 }
